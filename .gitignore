@@ -1,0 +1,119 @@
+############################
+# Build results
+############################
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+
+############################
+# Visual Studio 2022
+############################
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Debug/Release folders (на всякий случай)
+Debug/
+Release/
+x64/
+x86/
+
+############################
+# Rider / JetBrains
+############################
+.idea/
+*.sln.iml
+
+############################
+# .NET
+############################
+*.dll
+*.exe
+*.pdb
+*.cache
+*.ilk
+*.obj
+*.lib
+
+############################
+# NuGet
+############################
+*.nupkg
+*.snupkg
+# если не хочешь хранить пакеты локально
+packages/
+# но НЕ игнорируй:
+!packages/build/
+!packages/repositories.config
+
+############################
+# Resharper / Rider caches
+############################
+_ReSharper*/
+*.DotSettings.user
+
+############################
+# Publish / artifacts
+############################
+publish/
+artifacts/
+
+############################
+# OS files
+############################
+.DS_Store
+Thumbs.db
+
+############################
+# Test results
+############################
+TestResults/
+*.trx
+
+############################
+# Temporary files
+############################
+*.tmp
+*.temp
+*.bak
+
+############################
+# WPF specific
+############################
+*.g.cs
+*.g.i.cs
+*.baml
+
+############################
+# Coverage / tools
+############################
+coverage/
+*.coverage
+*.coveragexml
+
+############################
+# Dotnet CLI
+############################
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+############################
+# Logs
+############################
+*.log
+
+############################
+# Environment / secrets
+############################
+.env
+.env.*
+
+############################
+# Docs (IMPORTANT)
+############################
+!docs/
+!docs/**
