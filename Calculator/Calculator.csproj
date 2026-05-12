@@ -61,6 +61,10 @@
         <Compile Include="Factories\NumberButtonCreator.cs" />
         <Compile Include="Factories\OperationButtonCreator.cs" />
         <Compile Include="Models\Calculator.cs" />
+        <Compile Include="States\ICalculatorState.cs" />
+        <Compile Include="States\InputState.cs" />
+        <Compile Include="States\OperationState.cs" />
+        <Compile Include="States\ResultState.cs" />
         <Compile Include="ViewModels\MainViewModel.cs" />
         <Compile Include="Views\MainWindow.xaml.cs">
           <DependentUpon>MainWindow.xaml</DependentUpon>

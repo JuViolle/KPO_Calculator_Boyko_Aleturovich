@@ -1,12 +1,25 @@
-﻿using System.ComponentModel;
+﻿using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using Calculator.Commands;
+using Calculator.States;
 
 namespace Calculator.ViewModels;
 
 public class MainViewModel : INotifyPropertyChanged
 {
+    private readonly Models.Calculator _calculatorModel;
+
+    public ObservableCollection<string> History { get; } = new();
+
+    private ICalculatorState _state;
+
+    private string _display = "0";
+    public string CurrentInput = "";
+    private double _lastValue = 0;
+    private string _operation = "";
+
     public string Display
     {
         get => _display;
@@ -18,120 +31,69 @@ public class MainViewModel : INotifyPropertyChanged
     }
 
     public ICommand ButtonCommand { get; }
-    
-    private string _display = "0";
-    private string _currentInput = "";
-    private double _lastValue = 0;
-    private string _operation = "";
-    
-    private readonly Models.Calculator _calculatorModel;
 
     public MainViewModel(Models.Calculator calculator)
     {
         _calculatorModel = calculator;
-        
+
         ButtonCommand = new RelayCommand(OnButtonClick);
+        _state = new InputState();
     }
 
     private void OnButtonClick(object parameter)
     {
         string value = parameter.ToString();
+        HandleInput(value);
+    }
 
-        if (char.IsDigit(value, 0) || value == ",")
-        {
-            HandleNumber(value);
-        }
-        else if (value == "C")
+    public void HandleInput(string value)
+    {
+        _state.Handle(this, value);
+    }
+
+    public void ChangeState(ICalculatorState state)
+    {
+        _state = state;
+    }
+
+    public void HandleOperation(string value)
+    {
+        if (value == "C")
         {
             Reset();
+            return;
         }
-        else if (value == "=")
+
+        if (value == "=")
         {
             Calculate();
             _operation = "";
-        }
-        else if (value == "+/-")
-        {
-            ChangeSign();
-        }
-        else if (IsUnary(value))
-        {
-            ApplyUnary(value);
-        }
-        else
-        {
-            HandleOperation(value);
-        }
-    }
-
-    private void HandleNumber(string value)
-    {
-        if (value == "," && _currentInput.Contains(","))
+            ChangeState(new ResultState());
             return;
-
-        _currentInput += value;
-        Display = _currentInput;
-    }
-
-    private void HandleOperation(string value)
-    {
-        if (_currentInput != "")
-        {
-            Calculate();
         }
 
         _operation = value;
-        _currentInput = "";
-    }
-
-    private void ChangeSign()
-    {
-        if (!string.IsNullOrEmpty(_currentInput))
-        {
-            double val = double.Parse(_currentInput);
-            val = -val;
-
-            _currentInput = val.ToString();
-            Display = _currentInput;
-        }
-    }
-
-    private bool IsUnary(string op)
-    {
-        return op == "sqrt" ||
-               op == "log" ||
-               op == "sin" ||
-               op == "cos" ||
-               op == "tan";
-    }
-
-    private void ApplyUnary(string operation)
-    {
-        double value = string.IsNullOrEmpty(_currentInput)
-            ? _lastValue
-            : double.Parse(_currentInput);
-
-        value = _calculatorModel.ApplyUnary(value, operation);
-
-        _currentInput = value.ToString();
-        Display = _currentInput;
+        _lastValue = string.IsNullOrEmpty(CurrentInput) ? 0 : double.Parse(CurrentInput);
+        CurrentInput = "";
     }
 
     private void Calculate()
     {
-        double current = string.IsNullOrEmpty(_currentInput)
-            ? 0
-            : double.Parse(_currentInput);
+        double current = string.IsNullOrEmpty(CurrentInput) ? 0 : double.Parse(CurrentInput);
 
-        _lastValue = _calculatorModel.Calculate(_lastValue, current, _operation);
+        double result = _calculatorModel.Calculate(_lastValue, current, _operation);
 
-        Display = _lastValue.ToString();
-        _currentInput = "";
+        string record = $"{_lastValue} {_operation} {current} = {result}";
+        History.Add(record);
+
+        Display = result.ToString();
+        CurrentInput = "";
+        _lastValue = result;
     }
 
-    private void Reset()
+    public void Reset()
     {
-        _currentInput = "";
+        CurrentInput = "";
         _lastValue = 0;
         _operation = "";
         Display = "0";
@@ -139,8 +101,8 @@ public class MainViewModel : INotifyPropertyChanged
 
     public event PropertyChangedEventHandler PropertyChanged;
 
-    private void OnPropertyChanged([CallerMemberName] string propertyName = null)
+    private void OnPropertyChanged([CallerMemberName] string name = null)
     {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
     }
 }
