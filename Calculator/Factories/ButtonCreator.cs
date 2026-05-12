@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace Calculator.Scripts;
+namespace Calculator.Factories;
 
 public abstract class ButtonCreator
 {

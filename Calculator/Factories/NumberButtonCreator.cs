@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 
-namespace Calculator.Scripts;
+namespace Calculator.Factories;
 
 public class NumberButtonCreator : ButtonCreator
 {
