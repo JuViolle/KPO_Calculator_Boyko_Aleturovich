@@ -51,7 +51,20 @@ namespace Calculator.Views
             Grid.SetRow(display, 0);
             Grid.SetColumnSpan(display, 5);
             grid.Children.Add(display);
+            
+            var history = new ListBox
+            {
+                Margin = new Thickness(5),
+            };
 
+            history.SetValue(ScrollViewer.VerticalScrollBarVisibilityProperty, ScrollBarVisibility.Auto);
+            history.SetValue(ScrollViewer.HorizontalScrollBarVisibilityProperty, ScrollBarVisibility.Disabled);
+            history.SetBinding(ListBox.ItemsSourceProperty, new Binding("History"));
+            
+            Grid.SetRow(history, 1);
+            Grid.SetColumnSpan(history, 5);
+            grid.Children.Add(history);
+            
             string[,] buttons =
             {
                 {"sin", "cos", "tan", "sqrt", "log"},
@@ -79,7 +92,7 @@ namespace Calculator.Views
 
                     button.CommandParameter = content;
 
-                    Grid.SetRow(button, i + 1);
+                    Grid.SetRow(button, i + 2);
                     Grid.SetColumn(button, j);
 
                     grid.Children.Add(button);
