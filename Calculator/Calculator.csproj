@@ -56,10 +56,13 @@
             <DependentUpon>App.xaml</DependentUpon>
             <SubType>Code</SubType>
         </Compile>
-        <Compile Include="Scripts\ButtonCreator.cs" />
-        <Compile Include="Scripts\NumberButtonCreator.cs" />
-        <Compile Include="Scripts\OperationButtonCreator.cs" />
-        <Compile Include="Windows\MainWindow.xaml.cs">
+        <Compile Include="Commands\RelayCommand.cs" />
+        <Compile Include="Factories\ButtonCreator.cs" />
+        <Compile Include="Factories\NumberButtonCreator.cs" />
+        <Compile Include="Factories\OperationButtonCreator.cs" />
+        <Compile Include="Models\Calculator.cs" />
+        <Compile Include="ViewModels\MainViewModel.cs" />
+        <Compile Include="Views\MainWindow.xaml.cs">
           <DependentUpon>MainWindow.xaml</DependentUpon>
           <SubType>Code</SubType>
         </Compile>
@@ -82,7 +85,7 @@
         <None Include="App.config"/>
     </ItemGroup>
     <ItemGroup>
-      <Page Include="Windows\MainWindow.xaml">
+      <Page Include="Views\MainWindow.xaml">
         <Generator>MSBuild:Compile</Generator>
         <SubType>Designer</SubType>
       </Page>
