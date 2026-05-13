@@ -11,7 +11,8 @@ public class NumberButtonCreator : ButtonCreator
         {
             Content = content,
             FontSize = 18,
-            Margin = new Thickness(5)
+            Margin = new Thickness(5),
+            Background = System.Windows.Media.Brushes.Gray
         };
     }
 }
