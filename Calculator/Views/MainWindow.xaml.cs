@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using Calculator.Factories;
 using Calculator.ViewModels;
 
 namespace Calculator.Views
@@ -61,18 +62,23 @@ namespace Calculator.Views
                 {"0", ",", "=", "+", "C"}
             };
 
+            ButtonCreator numberFactory = new NumberButtonCreator();
+            ButtonCreator operationFactory = new OperationButtonCreator();
             for (int i = 0; i < buttons.GetLength(0); i++)
             {
                 for (int j = 0; j < buttons.GetLength(1); j++)
                 {
                     string content = buttons[i, j];
 
-                    var button = new Button
+                    Button button;
+                    if (char.IsDigit(content, 0) || content == ",")
                     {
-                        Content = content,
-                        FontSize = 18,
-                        Margin = new Thickness(5)
-                    };
+                        button = numberFactory.CreateButton(content);
+                    }
+                    else
+                    {
+                        button = operationFactory.CreateButton(content);
+                    }
 
                     button.SetBinding(Button.CommandProperty,
                         new Binding("ButtonCommand"));
